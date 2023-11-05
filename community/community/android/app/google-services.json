@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4089162973",
+    "project_id": "communitybase-f5faf",
+    "storage_bucket": "communitybase-f5faf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4089162973:android:e0b5e17baa9485f51ebf34",
+        "android_client_info": {
+          "package_name": "com.mycompany.community"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe2HEgEDdxhfoOGy3nGVaUVDkWachR0J8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
