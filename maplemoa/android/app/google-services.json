@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "925684634960",
+    "project_id": "dtproject-3930e",
+    "storage_bucket": "dtproject-3930e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925684634960:android:f8d82ac1dd236850984855",
+        "android_client_info": {
+          "package_name": "com.example.maplemoa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMkz4evTy9or1ajGUqWMnL36nJcB3huIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
