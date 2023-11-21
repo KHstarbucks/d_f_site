@@ -1,87 +1,139 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:convert' show json;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:community/auth/authentification.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  clientId:'925684634960-ngkhmmc7t04rmnel825rtn6rqhg678q6.apps.googleusercontent.com',
+  scopes: <String>[
+    'email'
+  ]
+);
+
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final VoidCallback onLoginSuccess;
+  const LoginPage({Key? key, required this.onLoginSuccess}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _authentication = FirebaseAuth.instance;
+  GoogleSignInAccount? _currentUser;
+  String _contactText= '';
+  
 
-
-  bool isLoginPage = true;
-  final _formKey = GlobalKey<FormState>();
-  String userName = '';
-  String userEmail = '';
-  String userPassword = '';
-
-  void _tryValidation(){
-    final isValid = _formKey.currentState!.validate();
-
-    if(isValid){
-      _formKey.currentState!.save();
-    }
+  @override
+  void initState(){
+    super.initState();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState((){
+        _currentUser = account;
+      });
+      if(_currentUser != null){
+        _handleGetContact(_currentUser!);
+      }
+     });
+     _googleSignIn.signInSilently();
   }
 
+  Future<void> _handleGetContact(GoogleSignInAccount user) async{
+    setState(() {
+      _contactText = 'Loading';
+    });
+    final http.Response response = await http.get(
+      Uri.parse(''),
+      headers: await user.authHeaders
+    );
+    if (response.statusCode == 200){
+      setState(() {
+        _contactText = 'People API gave a ${response.statusCode}'
+        'response.Check logs for details';
+      });
+      print('People API ${response.statusCode} response: ${response.body}');
+      return;
+    }
+    final Map<String,dynamic> data =
+    json.decode(response.body) as Map<String,dynamic>;
+    final String? namedContact = _pickFirstNamedContact(data);
+    setState(() {
+      if(namedContact != null){
+        _contactText = 'I see you know $namedContact';
+      }
+      else {
+        _contactText = 'None';
+      }
+    });
+  }
+
+  String? _pickFirstNamedContact(Map<String,dynamic> data){
+    final List<dynamic>? connections = data['connections'] as List<dynamic>?;
+    final Map<String,dynamic>? contact = connections?.firstWhere(
+      (dynamic contact) => contact['names'] != null,
+      orElse: () => null,
+    ) as Map<String, dynamic>?;
+    if(contact != null){
+      final Map<String, dynamic>? name = contact['names'].firstWhere(
+        (dynamic name) => name['displayName'] != null,
+        orElse:() => null,
+      )as Map<String,dynamic>?;
+      if(name != null){
+      return name['displayName'] as String?;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _handleSignIn() async{
+    try {
+      await _googleSignIn.signIn();
+    }catch(e){
+      print(e);
+    }
+  }
+  //logout via google sdk
+  Future<void> _handleSignOut() =>
+   _googleSignIn.signOut();
+
+  Widget _buildBody(){
+    final GoogleSignInAccount? user = _currentUser;
+    if(user != null){
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          ListTile(
+            leading: GoogleUserCircleAvatar(identity: user),
+            title: Text(user.displayName ?? ''),
+            subtitle: Text(user.email),
+          ),
+          const Text('Signed in successfully.'),
+          Text(_contactText),
+          ElevatedButton(onPressed: _handleSignOut, child: const Text('Sign out')),
+          ElevatedButton(child: const Text('Refresh'),onPressed: ()=> _handleGetContact(user))
+        ],
+      );
+    }
+    else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children:<Widget>[
+          const Text('You are not signed in'),
+          ElevatedButton(onPressed: _handleSignIn, child: const Text('Sign in'))
+        ]
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       backgroundColor: Color(0xFFF8F1EB),
-      body: GestureDetector(
-        onTap: (){
-          FocusScope.of(context).unfocus();
-        },
-        child: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              right:0,
-              left: 0,
-              child: Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xffEE8b60)],
-                    stops: [0,1],
-                    begin: AlignmentDirectional(0.87,-1),
-                    end: AlignmentDirectional(-0.87,1),
-                  ),
-                ),
-                alignment: AlignmentDirectional(0.00,-1.00),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 32),
-                        child: Container(
-                          width: 200,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          alignment: AlignmentDirectional(0.00,0.00),
-                          child: Text(
-                            '메이플모아',
-                            style: TextStyle(
-                              letterSpacing: 1.0,
-                              fontSize:32,
-                              color:Colors.white
-                            ),
-                          )
-                        )
-                        )
-                    ],
-                  ),
-                )
-              ),
-            )
-          ],
-        )
+      body: ConstrainedBox(constraints: const BoxConstraints.expand(),
+      child: _buildBody(),
       )
     );
   }

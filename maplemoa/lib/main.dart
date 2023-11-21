@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'pages/home_page.dart';
 import 'pages/board_page.dart';
 import 'pages/login_page.dart';
 import 'pages/calculator_page.dart';
 import 'pages/union_page.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:community/providers/navigationbar.dart';
+import 'package:logger/logger.dart';
 
-void main() async {
-   // android and ios
-  runApp(const MyApp());
+var logger = Logger(printer: PrettyPrinter());
+
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +25,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: const MyStatefulWidget(),
     );
   }
@@ -36,6 +42,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget>{
   final PageController _pageController = PageController();
 
   int currentIndex = 0;
+  bool isLoggedIn = false;
 
   final List<Widget> _widgetOptions = <Widget> [
     HomePage(),
@@ -54,21 +61,20 @@ class MyStatefulWidgetState extends State<MyStatefulWidget>{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('메이플모아',
-            style: TextStyle(
-              fontSize:18,
-            )
-          ),
-          backgroundColor:const Color(0xffEE8B60),
-        ),
         body: PageView(
           controller: _pageController,
           children: <Widget> [
             Scaffold(
               body: Center(
-                child: _widgetOptions.elementAt(currentIndex),
+                child: isLoggedIn ?
+                _widgetOptions.elementAt(currentIndex)
+                : LoginPage(onLoginSuccess: (){
+                  setState(() {
+                    isLoggedIn = true;
+                  });
+                })
               ),
               bottomNavigationBar: MyNavigationBar(
                 currentIndex: currentIndex,
