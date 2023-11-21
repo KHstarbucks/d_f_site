@@ -7,13 +7,14 @@
         {
             "name": "maplemoa",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": ["-d","chrome","--web-port","8000"]
         },
         {
             "name": "maplemoa_web",
             "request": "launch",
             "type": "dart",
-            "args": ["-d","chrome"]
+            "args": ["-d","chrome","--web-port","8000"]
         },
         {
             "name": "maplemoa (profile mode)",
