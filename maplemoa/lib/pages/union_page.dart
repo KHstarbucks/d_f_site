@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class UnionWidget extends StatelessWidget{
+class UnionPage extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(

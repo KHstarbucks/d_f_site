@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 class MyNavigationBar extends StatelessWidget{
+
   final int currentIndex;
   final Function(int) onItemTapped;
-
-  MyNavigationBar({required this.currentIndex,required this.onItemTapped});
+  
+  MyNavigationBar({ required this.currentIndex, required this.onItemTapped});
 
   @override
   Widget build(BuildContext context){
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
+    return Material(
+      elevation: 8,
+      child: BottomNavigationBar(
+        currentIndex: currentIndex,
       onTap: onItemTapped,
       items: const [
         BottomNavigationBarItem(
@@ -32,6 +35,8 @@ class MyNavigationBar extends StatelessWidget{
       selectedItemColor:const Color(0xffee8b60),
       unselectedItemColor: Colors.grey,
       backgroundColor: Colors.white,     
+    )
+ 
     );
   }
 }

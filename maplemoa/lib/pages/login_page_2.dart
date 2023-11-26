@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:community/AppState.dart';
 import 'dart:async';
+import 'home_page.dart';
 
 
 class LoginPage extends StatefulWidget{
@@ -16,7 +18,67 @@ class _LoginPageState extends State<LoginPage>{
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _UidController = TextEditingController();
   final TextEditingController _UpwController = TextEditingController();
-  
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn(
+    clientId:'925684634960-ngkhmmc7t04rmnel825rtn6rqhg678q6.apps.googleusercontent.com',
+  scopes: <String>[
+    'email'
+  ]
+  );
+
+  Future<UserCredential?> _signInWithEmailAndPw(BuildContext context) async {
+    try{
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      final UserCredential authResult = await _auth.signInWithEmailAndPassword(
+        email: _UidController.text,
+        password: _UpwController.text,
+      );
+
+      final User? user = authResult.user;
+      print('Login successfully. ${user?.displayName}');
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AppState()),
+      );
+
+      return authResult;
+    }catch(e){
+      print('Login failed. $e');
+      return null;
+    }
+  }
+
+
+  Future<UserCredential?> _signInWithGoogle(BuildContext context) async {
+    try{
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      
+      final UserCredential authResult = await _auth.signInWithCredential(credential);
+      final User? user = authResult.user;
+
+      print("Google Sign In Successful : ${user?.displayName}");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AppState()),
+      );
+      
+
+        return authResult;
+      }catch(e){
+        print("Google sign in failed: $e");
+        return null;
+      }
+  }
+
   @override
   void initState(){
     super.initState();
@@ -61,7 +123,7 @@ class _LoginPageState extends State<LoginPage>{
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,
-                        fontFamily: 'Readex Pro',
+                        fontFamily: 'Jua',
                       ),
                     ),
                     Padding(
@@ -167,7 +229,7 @@ class _LoginPageState extends State<LoginPage>{
                           ),
                         ),
                       ),
-                      Padding(
+                      Padding(//login button
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                         child: ElevatedButton(
                           child: const Text('Login'),
@@ -179,53 +241,26 @@ class _LoginPageState extends State<LoginPage>{
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          onPressed: (){
-                            
+                          onPressed: () async {
+                            await _signInWithEmailAndPw(context);
                           },
                         ),
                       ),
-                      Padding(
+                      Padding(//google login
                         padding: EdgeInsetsDirectional.fromSTEB(0,0,0,16),
                         child: ElevatedButton(
                           child: const Text('Continue with Google'),
-                          icon: Falcon(
-                            FontAwesomeIcons.google,
-                            size: 20,
-                          ),
+                          
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
+                            
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             )
                           ),
                           onPressed: ()async{
-                            final _googleSignIn = GoogleSignIn();
-                            final googleAccount = await _googleSignIn.signIn();
-
-                            if(googleAccount != null){
-                              final googleAuth = await googleAccount.authentification;
-
-                              if(googleAuth.accessToken != null &&
-                                googleAuth.idToken != null){
-                                  try{
-                                    await FirebaseAuth.instance.
-                                    signInWithCredential(GoogleAuthProvider.credential(
-                                      idToken: googleAuth.idToken,
-                                      accessToken: googleAuth.accessToken,
-                                    ));
-                                    print('registered');
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute: (builder: (context) => HomePage()),
-                                    );
-                                  }on FirebaseAuthException catch(e){
-                                    print('error occured $e');
-                                  }catch(e){
-                                    print('error occured $e');
-                                  }
-                                }else print('error occured $e');
-                            }else print('error occured $e');
+                            await _signInWithGoogle(context);
                           },
                         ),
                       ),
@@ -241,7 +276,7 @@ class _LoginPageState extends State<LoginPage>{
                                   fontFamily: 'Readex Pro',
                                   color: Colors.black,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w500
+                                  fontWeight: FontWeight.w400
                                 ),
                               ),
                               TextSpan(
