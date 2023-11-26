@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'pages/home_page.dart';
 import 'pages/board_page.dart';
-import 'pages/login_page.dart';
+import 'pages/login_page#2.dart';
+//import 'pages/login_page.dart';
 import 'pages/calculator_page.dart';
 import 'pages/union_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +43,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget>{
   final PageController _pageController = PageController();
 
   int currentIndex = 0;
-  bool isLoggedIn = false;
+  
 
   final List<Widget> _widgetOptions = <Widget> [
     HomePage(),
@@ -68,13 +69,7 @@ class MyStatefulWidgetState extends State<MyStatefulWidget>{
           children: <Widget> [
             Scaffold(
               body: Center(
-                child: isLoggedIn ?
-                _widgetOptions.elementAt(currentIndex)
-                : LoginPage(onLoginSuccess: (){
-                  setState(() {
-                    isLoggedIn = true;
-                  });
-                })
+                child: _widgetOptions.elementAt(currentIndex)
               ),
               bottomNavigationBar: MyNavigationBar(
                 currentIndex: currentIndex,

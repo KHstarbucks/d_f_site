@@ -25,7 +25,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   GoogleSignInAccount? _currentUser;
   String _contactText= '';
-  
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
 
   @override
   void initState(){
@@ -98,6 +99,40 @@ class _LoginPageState extends State<LoginPage> {
   //logout via google sdk
   Future<void> _handleSignOut() =>
    _googleSignIn.signOut();
+
+  Widget _UidWidget(){
+    return TextFormField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'your email',
+      ),
+      validator: (String? value){
+        if(value!.isEmpty){
+          return '이메일을 입력하세요.';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _PwWidget(){
+    return TextFormField(
+      controller: _pwController,
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Password',
+      ),
+      validator: (String? value){
+        if(value!.isEmpty){
+          return '비밀번호 입력하세요';
+        }
+        return null;
+      }
+    );
+  }
 
   Widget _buildBody(){
     final GoogleSignInAccount? user = _currentUser;
