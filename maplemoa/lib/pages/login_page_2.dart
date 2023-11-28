@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:community/AppState.dart';
 import 'dart:async';
@@ -119,10 +120,10 @@ class _LoginPageState extends State<LoginPage>{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '메이플모아',
+                      'Maple Moa',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 32,
+                        fontSize: 20,
                         fontFamily: 'Jua',
                       ),
                     ),
@@ -132,7 +133,7 @@ class _LoginPageState extends State<LoginPage>{
                         'Get start with filling out the belows',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize:16,
+                          fontSize:12,
                           fontFamily: 'Readex Pro',
                         ),
                       ),
@@ -248,15 +249,21 @@ class _LoginPageState extends State<LoginPage>{
                       ),
                       Padding(//google login
                         padding: EdgeInsetsDirectional.fromSTEB(0,0,0,16),
-                        child: ElevatedButton(
-                          child: const Text('Continue with Google'),
+                        child: TextButton(
+                          child: const Text(
+                            'Continue with Google',
+                            style: TextStyle(
+                              color: const Color(0xffee8b60),
+                            ),
+                          ),
                           
-                          style: ElevatedButton.styleFrom(
+                          style: TextButton.styleFrom(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
                             
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
+                              
                             )
                           ),
                           onPressed: ()async{
@@ -280,11 +287,11 @@ class _LoginPageState extends State<LoginPage>{
                                 ),
                               ),
                               TextSpan(
-                                text: 'Create Account',
+                                text: '  Create Account',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
                                   color: Color(0xffee8b60),
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
                               ),

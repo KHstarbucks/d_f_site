@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:community/providers/boards.dart';
@@ -78,42 +79,95 @@ class _BoardPageState extends State<BoardPage>{
                   );
                 }
                 var posts = snapshot.data!.docs;
-                List<Widget> postWidgets = [];
-                for(var post in posts){
-                  var postData = post.data() as Map<String, dynamic>;
-                  var title = postData['title'];
-                  var content = postData['content'];
-                  var author = postData['author'];
-                  var views = postData['views'];
-                  var likes = postData['likes'];
-                  var dislikes = postData['dislikes'];
-                  var createdAt = (postData['createdAt'] as Timestamp).toDate();
 
-                  var postWidget = ListTile(
-                    title: Text(title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(content),
-                        Text('Author: $author'),
-                        Text('Likes: $likes'),
-                        Text('Dislikes: $dislikes'),
-                        Text('Created At: ${createdAt.toString()}'),
-                      ],
-                    ),
-                    onTap: (){
-                      _updateViews(post.reference, views);
-                    }
-                  );
-                  postWidgets.add(postWidget);
-                }
-                return ListView(
-                  children: postWidgets,
+                return ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index){
+                    var postData = posts[index].data() as Map<String, dynamic>;
+                    var title = postData['title'];
+                    var author = postData['author'];
+                    var createdAt = (postData['createdAt'] as Timestamp).toDate();
+
+                    return Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+                      child: GestureDetector(
+                        onTap: (){
+                          print('$index tapped');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                          color: Color(0xfff7f7f7),
+                          boxShadow: [
+                            BoxShadow(
+                            blurRadius: 3,
+                            color: Color(0x411d2429),
+                            offset:  Offset(0,1),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                            child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children:[
+                              Expanded(child: Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
+                                child:Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '$title'
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
+                                      child: AutoSizeText(
+                                        '$author',
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                  child: Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: Color(0xff57636c),
+                                    size: 24,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
+                                  child: Text(
+                                    '$createdAt',
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),  
+                  ),
                 );
-              }
-            ),
-          ),
-          isWriting ? Container(
+              },
+            );
+          },
+          )
+        ),
+        isWriting 
+        ? Container(
             color: Colors.white,
             padding: EdgeInsets.all(16),
             child: Column(
@@ -138,7 +192,7 @@ class _BoardPageState extends State<BoardPage>{
             ),
           ): Container(),
         ],
-      ),//posting button
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
