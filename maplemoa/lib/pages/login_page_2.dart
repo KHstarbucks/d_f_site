@@ -1,10 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:community/AppState.dart';
 import 'dart:async';
-import 'home_page.dart';
+import 'signup_page.dart';
 
 
 class LoginPage extends StatefulWidget{
@@ -35,14 +36,17 @@ class _LoginPageState extends State<LoginPage>{
         email: _UidController.text,
         password: _UpwController.text,
       );
+      
 
       final User? user = authResult.user;
       print('Login successfully. ${user?.displayName}');
 
-      Navigator.pushReplacement(
+      Future.delayed(Duration.zero, (){
+        Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AppState()),
-      );
+        );
+      });
 
       return authResult;
     }catch(e){
@@ -67,10 +71,12 @@ class _LoginPageState extends State<LoginPage>{
       final User? user = authResult.user;
 
       print("Google Sign In Successful : ${user?.displayName}");
-      Navigator.pushReplacement(
+      Future.delayed(Duration.zero, (){
+        Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => AppState()),
-      );
+        );
+      });
       
 
         return authResult;
@@ -94,10 +100,10 @@ class _LoginPageState extends State<LoginPage>{
       body: SafeArea(
         top: true,
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
           child: Container(
             width: double.infinity,
-            constraints: BoxConstraints(
+            constraints: const BoxConstraints(
               maxWidth: 570,
             ),
             decoration: BoxDecoration(
@@ -105,72 +111,75 @@ class _LoginPageState extends State<LoginPage>{
               boxShadow:[
                 BoxShadow(
                   blurRadius: 4,
-                  color: Color(0X33000000),
+                  color: const Color(0X33000000),
                   offset: Offset(0,2),
                 ),
               ],
               borderRadius: BorderRadius.circular(12),
             ),
             child: Align(
-              alignment: AlignmentDirectional(0,0),
+              alignment: const AlignmentDirectional(0,0),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(32, 32, 32, 32),
+                padding: const EdgeInsetsDirectional.fromSTEB(32, 32, 32, 32),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Maple Moa',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Jua',
+                        fontSize: 32,
+                        
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 24),
                       child: Text(
                         'Get start with filling out the belows',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize:12,
+                          fontSize:16,
                           fontFamily: 'Readex Pro',
                         ),
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                        child: Container(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
                             controller: _UidController,
                             autofocus: true,
                             autofillHints: [AutofillHints.email],
                             obscureText: false,
+                            cursorColor: const Color(0xf8606163),
                             decoration: InputDecoration(
                               labelText: 'Email',
+                              labelStyle: const TextStyle(color: Color(0xf8606163)),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width:2,
                                   color: Color(0xfff1f2f8),
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                   color: Color(0xfff1f2f8),
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -185,44 +194,46 @@ class _LoginPageState extends State<LoginPage>{
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                        child: Container(
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
                             controller: _UpwController,
                             autofocus: true,
                             autofillHints: [AutofillHints.password],
                             obscureText: true,
+                            cursorColor: const Color(0xf8606163),
                             decoration: InputDecoration(
                               labelText: 'Password',
+                              labelStyle: const TextStyle(color: Color(0xf8606163)),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width:2,
                                   color: Color(0xfff1f2f8),
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                   color: Color(0xfff1f2f8),
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: Color(0xfff1f2f8),
+                              fillColor: const Color(0xfff1f2f8),
                             ),
                             
                             keyboardType: TextInputType.text,
@@ -231,40 +242,50 @@ class _LoginPageState extends State<LoginPage>{
                         ),
                       ),
                       Padding(//login button
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                         child: ElevatedButton(
-                          child: const Text('Login'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xffee8b60),
+                            backgroundColor: const Color(0xffee8b60),
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
+                          child: const Text('Login'),
                           onPressed: () async {
                             await _signInWithEmailAndPw(context);
                           },
                         ),
                       ),
                       Padding(//google login
-                        padding: EdgeInsetsDirectional.fromSTEB(0,0,0,16),
-                        child: TextButton(
-                          child: const Text(
-                            'Continue with Google',
-                            style: TextStyle(
-                              color: const Color(0xffee8b60),
-                            ),
-                          ),
-                          
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0,0,0,16),
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
-                            
+                            side: const BorderSide(color: Color(0xffee8b60)),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                               
                             )
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                FontAwesomeIcons.google,
+                                size: 20,
+                                color: Color(0xffee8b60),
+                              ),
+                              Text(
+                            ' Continue with Google',
+                            style: TextStyle(
+                              color: Color(0xffee8b60),
+                                ),  
+                              ),
+                              
+                            ],
                           ),
                           onPressed: ()async{
                             await _signInWithGoogle(context);
@@ -277,7 +298,7 @@ class _LoginPageState extends State<LoginPage>{
                           textScaleFactor: MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text:'Don\'t have an account?',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
@@ -288,12 +309,20 @@ class _LoginPageState extends State<LoginPage>{
                               ),
                               TextSpan(
                                 text: '  Create Account',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Readex Pro',
                                   color: Color(0xffee8b60),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
+                                recognizer: TapGestureRecognizer()
+                                ..onTap = (){
+                                  print("clicked");
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SignupPage()),
+                                  );
+                                },
                               ),
                             ]
                           ),

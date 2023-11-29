@@ -165,16 +165,17 @@ class _BoardPageState extends State<BoardPage>{
             );
           },
           )
-        ),
+        ),//글 작성을 위한 버튼을 누른 경우
         isWriting 
         ? Container(
+            height: 400,
             color: Colors.white,
             padding: EdgeInsets.all(16),
             child: Column(
               children: [
                 TextField(
                   controller: _titleController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'title',
                   ),
                 ),
@@ -182,12 +183,23 @@ class _BoardPageState extends State<BoardPage>{
                 TextField(
                   controller: _contentController,
                   maxLines: 10,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'content',
                   ),
                 ),
                 SizedBox(height: 8),
-                ElevatedButton(onPressed: _addPost, child: Text('Post'))
+                ElevatedButton(
+                  onPressed: _addPost, 
+                  child: Text('Post'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xffee8b60),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                    minimumSize: const Size.fromHeight(8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
               ],
             ),
           ): Container(),
@@ -200,8 +212,8 @@ class _BoardPageState extends State<BoardPage>{
           });
         },
         tooltip: 'Add Post',
-        child: Icon(Icons.add),
         backgroundColor: const Color(0xffee8b60),
+        child: Icon(Icons.add),
       ),
     );
   }
