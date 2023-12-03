@@ -4,6 +4,7 @@ import 'pages/login_page_2.dart';
 //import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
+import 'package:go_router/go_router.dart';
 
 var logger = Logger(printer: PrettyPrinter());
 
@@ -17,6 +18,7 @@ Future<void> main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context){
