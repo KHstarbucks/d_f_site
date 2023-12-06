@@ -39,7 +39,7 @@ class SignupPage extends StatelessWidget{
         _logger.e('Sign up failed. $e');
       }
     }
-    else return;
+    else {return;}
   }
   
 

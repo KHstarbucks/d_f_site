@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage>{
               boxShadow:[
                 BoxShadow(
                   blurRadius: 4,
-                  color: const Color(0X33000000),
+                  color: Palette.shadowColor,
                   offset: Offset(0,2),
                 ),
               ],
@@ -155,21 +155,21 @@ class _LoginPageState extends State<LoginPage>{
                             autofocus: true,
                             autofillHints: [AutofillHints.email],
                             obscureText: false,
-                            cursorColor: const Color(0xf8606163),
+                            cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
                               labelText: 'Email',
-                              labelStyle: const TextStyle(color: Color(0xf8606163)),
+                              labelStyle: const TextStyle(color:Palette.cursorColor),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage>{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             
                             keyboardType: TextInputType.emailAddress,
@@ -210,14 +210,14 @@ class _LoginPageState extends State<LoginPage>{
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -234,7 +234,7 @@ class _LoginPageState extends State<LoginPage>{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             
                             keyboardType: TextInputType.text,

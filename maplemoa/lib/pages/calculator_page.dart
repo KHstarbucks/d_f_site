@@ -552,7 +552,7 @@ class _CalculatorPageState extends State<CalculatorPage>{
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Palette.mainColor,
                           padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                          minimumSize: const Size.fromHeight(33),
+                          minimumSize: const Size.fromHeight(44),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(9),
                           ),

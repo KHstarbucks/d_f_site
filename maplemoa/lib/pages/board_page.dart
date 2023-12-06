@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:community/providers/boards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community/models/post.dart';
+import 'package:community/providers/palette.dart';
 
 
 class BoardPage extends StatefulWidget{
@@ -17,8 +18,11 @@ class _BoardPageState extends State<BoardPage>{
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
   bool isWriting = false;
   User? currentUser = FirebaseAuth.instance.currentUser;
+  late List<Map<String, dynamic>> searchedPosts;
   
   //add new post
   void _addPost() async {
@@ -54,6 +58,11 @@ class _BoardPageState extends State<BoardPage>{
   void _updateDislikes(DocumentReference postRef, int currentDislikes){
     postRef.update({'dislikes': currentDislikes +1});
   }
+  @override
+  void initState(){
+    super.initState();
+    searchedPosts = [];
+  }
 
   @override
   Widget build(BuildContext context){
@@ -64,17 +73,77 @@ class _BoardPageState extends State<BoardPage>{
               fontSize:18,
             )
           ),
-          backgroundColor: const Color(0xffEE8B60),
+          backgroundColor: Palette.mainColor,
       ),
       body: Column(
         children: [
+          SizedBox(height: 12),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+            child: Container(
+              width: double.infinity,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Palette.borderColor,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    color: Palette.shadowColor,
+                    offset: Offset(0,2),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Palette.borderColor,
+                ),
+              ),
+              child: Padding(
+                padding:EdgeInsetsDirectional.fromSTEB(12, 0, 8, 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                        child: Container(
+                          width: 220,
+                          child: TextFormField(
+                            controller: _searchController,
+                            obscureText: false,
+                            decoration: const InputDecoration(
+                              labelText: 'search..',
+                              labelStyle: TextStyle(color: Palette.cursorColor),
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              filled: true,
+                              fillColor: Palette.borderColor,
+                            ),
+                            keyboardType: TextInputType.text,
+                            cursorColor: Palette.cursorColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: (){
+                        print(" s");
+                      },
+                      icon: const Icon(Icons.search),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           //board list
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('posts').snapshots(),
               builder: (context, snapshot){
                 if(!snapshot.hasData){
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -89,7 +158,7 @@ class _BoardPageState extends State<BoardPage>{
                     var createdAt = (postData['createdAt'] as Timestamp).toDate();
 
                     return Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+                      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                       child: GestureDetector(
                         onTap: (){
                           print('$index tapped');
@@ -212,7 +281,7 @@ class _BoardPageState extends State<BoardPage>{
           });
         },
         tooltip: 'Add Post',
-        backgroundColor: const Color(0xffee8b60),
+        backgroundColor: Palette.mainColor,
         child: Icon(Icons.add),
       ),
     );
