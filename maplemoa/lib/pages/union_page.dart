@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-class UnionPage extends StatelessWidget{
+class UnionPage extends StatefulWidget{
+  const UnionPage({Key ? key}) : super(key:key);
+  @override
+  State<UnionPage> createState() => _UnionPageState();
+}
+
+class _UnionPageState extends State<UnionPage>{
+  //레벨
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -12,14 +20,7 @@ class UnionPage extends StatelessWidget{
           ),
           backgroundColor:const Color(0xffEE8B60),
         ),
-      body: Center(
-        child: const Text(
-          'Union',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize:20,
-          )
-      ))
+      
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:community/providers/palette.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget{
   const LoginPage({Key?key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage>{
@@ -96,7 +97,7 @@ class _LoginPageState extends State<LoginPage>{
   Widget build(BuildContext context){
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: const Color(0XFFEE8B60),
+      backgroundColor: Palette.mainColor,
       body: SafeArea(
         top: true,
         child: Padding(
@@ -245,7 +246,7 @@ class _LoginPageState extends State<LoginPage>{
                         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffee8b60),
+                            backgroundColor: Palette.mainColor,
                             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
                             shape: RoundedRectangleBorder(
@@ -264,7 +265,7 @@ class _LoginPageState extends State<LoginPage>{
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
-                            side: const BorderSide(color: Color(0xffee8b60)),
+                            side: const BorderSide(color: Palette.mainColor,),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                               
@@ -276,12 +277,12 @@ class _LoginPageState extends State<LoginPage>{
                               Icon(
                                 FontAwesomeIcons.google,
                                 size: 20,
-                                color: Color(0xffee8b60),
+                                color: Palette.mainColor,
                               ),
                               Text(
                             ' Continue with Google',
                             style: TextStyle(
-                              color: Color(0xffee8b60),
+                              color: Palette.mainColor,
                                 ),  
                               ),
                               
@@ -311,7 +312,7 @@ class _LoginPageState extends State<LoginPage>{
                                 text: '  Create Account',
                                 style: const TextStyle(
                                   fontFamily: 'Readex Pro',
-                                  color: Color(0xffee8b60),
+                                  color: Palette.mainColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
@@ -338,8 +339,4 @@ class _LoginPageState extends State<LoginPage>{
         );
 
   }
-
-
-  
 }
-

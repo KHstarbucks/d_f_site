@@ -1,3 +1,4 @@
+import 'package:community/providers/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -281,7 +282,7 @@ class SignupPage extends StatelessWidget{
                         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffee8b60),
+                            backgroundColor: Palette.mainColor,
                             padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
                             shape: RoundedRectangleBorder(
