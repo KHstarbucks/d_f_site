@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:community/providers/boards.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:community/models/post.dart';
 import 'package:community/providers/palette.dart';
+import'package:community/providers/drawer.dart';
+import 'detail_page.dart';
 
 
 class BoardPage extends StatefulWidget{
-  const BoardPage({Key? key}) : super(key:key);
+  const BoardPage({super.key});
 
   @override
   State<BoardPage> createState() => _BoardPageState();
@@ -67,6 +67,7 @@ class _BoardPageState extends State<BoardPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
           title: const Text('자유 게시판',
             style: TextStyle(
@@ -77,15 +78,15 @@ class _BoardPageState extends State<BoardPage>{
       ),
       body: Column(
         children: [
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
             child: Container(
               width: double.infinity,
               height: 60,
               decoration: BoxDecoration(
                 color: Palette.borderColor,
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     blurRadius: 3,
                     color: Palette.shadowColor,
@@ -98,14 +99,14 @@ class _BoardPageState extends State<BoardPage>{
                 ),
               ),
               child: Padding(
-                padding:EdgeInsetsDirectional.fromSTEB(12, 0, 8, 0),
+                padding:const EdgeInsetsDirectional.fromSTEB(12, 0, 8, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-                        child: Container(
+                        padding: const EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
+                        child: SizedBox(
                           width: 220,
                           child: TextFormField(
                             controller: _searchController,
@@ -156,18 +157,24 @@ class _BoardPageState extends State<BoardPage>{
                     var title = postData['title'];
                     var author = postData['author'];
                     var createdAt = (postData['createdAt'] as Timestamp).toDate();
+                    var view = postData['views'];
 
                     return Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                       child: GestureDetector(
                         onTap: (){
-                          print('$index tapped');
+                          DocumentReference postRef = FirebaseFirestore.instance.collection('posts').doc(posts[index].id);
+                          _updateViews(postRef, view);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DetailPage(postData: postData, postRef: postRef)),
+                          );
                         },
                         child: Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                          color: Color(0xfff7f7f7),
-                          boxShadow: [
+                          color: const Color(0xfff7f7f7),
+                          boxShadow: const [
                             BoxShadow(
                             blurRadius: 3,
                             color: Color(0x411d2429),
@@ -177,12 +184,12 @@ class _BoardPageState extends State<BoardPage>{
                           borderRadius: BorderRadius.circular(8),
                           ),
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                            padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
                             child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children:[
                               Expanded(child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
+                                padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
                                 child:Column(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -192,7 +199,7 @@ class _BoardPageState extends State<BoardPage>{
                                       '$title'
                                     ),
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
+                                      padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
                                       child: AutoSizeText(
                                         '$author',
                                         textAlign: TextAlign.start,
@@ -207,7 +214,7 @@ class _BoardPageState extends State<BoardPage>{
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Padding(
+                                const Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                                   child: Icon(
                                     Icons.chevron_right_rounded,
@@ -216,7 +223,7 @@ class _BoardPageState extends State<BoardPage>{
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
+                                  padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
                                   child: Text(
                                     '$createdAt',
                                     textAlign: TextAlign.end,
@@ -239,7 +246,7 @@ class _BoardPageState extends State<BoardPage>{
         ? Container(
             height: 400,
             color: Colors.white,
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 TextField(
@@ -248,7 +255,7 @@ class _BoardPageState extends State<BoardPage>{
                     hintText: 'title',
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 TextField(
                   controller: _contentController,
                   maxLines: 10,
@@ -256,18 +263,18 @@ class _BoardPageState extends State<BoardPage>{
                     hintText: 'content',
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton(
-                  onPressed: _addPost, 
-                  child: Text('Post'),
+                  onPressed: _addPost,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xffee8b60),
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                    backgroundColor: const Color(0xffee8b60),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     minimumSize: const Size.fromHeight(8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(2),
                     ),
-                  ),
+                  ), 
+                  child: const Text('Post'),
                 ),
               ],
             ),
@@ -282,7 +289,7 @@ class _BoardPageState extends State<BoardPage>{
         },
         tooltip: 'Add Post',
         backgroundColor: Palette.mainColor,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

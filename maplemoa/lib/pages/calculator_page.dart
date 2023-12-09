@@ -1,9 +1,10 @@
 import'package:flutter/material.dart';
 import 'package:community/providers/palette.dart';
 import 'package:community/providers/spec_cal.dart';
+import'package:community/providers/drawer.dart';
 
 class CalculatorPage extends StatefulWidget{
-  const CalculatorPage({Key? key}) : super(key:key);
+  const CalculatorPage({super.key});
   @override
   State<CalculatorPage> createState() => _CalculatorPageState();
 
@@ -54,6 +55,7 @@ class _CalculatorPageState extends State<CalculatorPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
           title: const Text('환산 계산기',
             style: TextStyle(
@@ -72,7 +74,7 @@ class _CalculatorPageState extends State<CalculatorPage>{
             ),
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   blurRadius: 4,
                   color: Palette.shadowColor,
@@ -93,7 +95,7 @@ class _CalculatorPageState extends State<CalculatorPage>{
                       'ArchMage(fire,poison)',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 32,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -559,24 +561,24 @@ class _CalculatorPageState extends State<CalculatorPage>{
                         ),
                         child: const Text('calculate'),
                         onPressed: () async{
-                          String _level = _levelController.text;
-                          String _combat = _combatController.text;
-                          String _spell = _spellController.text;
-                          String _percentage = _percentageController.text;
-                          String _armorbreak = _armorbreakController.text;
-                          String _buff = _buffController.text;
-                          String _cooltime = _cooltimeController.text;
-                          String _totaldamage = _totaldamageController.text;
-                          String _critical = _criticalController.text;
-                          int? level = parseInt(_level);
-                          int? combat = parseInt(_combat);
-                          int? spell = parseInt(_spell);
-                          int? percentage = parseInt(_percentage);
-                          double? armorbreak = parseDouble(_armorbreak);
-                          int? buff = parseInt(_buff);
-                          int? cooltime = parseInt(_cooltime);
-                          int? totaldamage = parseInt(_totaldamage);
-                          double? critical = parseDouble(_critical);
+                          String level0 = _levelController.text;
+                          String combat0 = _combatController.text;
+                          String spell0 = _spellController.text;
+                          String percentage0 = _percentageController.text;
+                          String armorbreak0 = _armorbreakController.text;
+                          String buff0 = _buffController.text;
+                          String cooltime0 = _cooltimeController.text;
+                          String totaldamage0 = _totaldamageController.text;
+                          String critical0 = _criticalController.text;
+                          int? level = parseInt(level0);
+                          int? combat = parseInt(combat0);
+                          int? spell = parseInt(spell0);
+                          int? percentage = parseInt(percentage0);
+                          double? armorbreak = parseDouble(armorbreak0);
+                          int? buff = parseInt(buff0);
+                          int? cooltime = parseInt(cooltime0);
+                          int? totaldamage = parseInt(totaldamage0);
+                          double? critical = parseDouble(critical0);
 
                           setState(() {
                             result = calculateSpec(isReleased, level!, combat!*10000, spell!, percentage!,

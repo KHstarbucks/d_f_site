@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'pages/board_page.dart';
 import 'pages/calculator_page.dart';
 import 'pages/home_page.dart';
-import 'pages/login_page_2.dart';
 import 'pages/union_page.dart';
 
 class AppState extends StatelessWidget{
+  const AppState({super.key});
+
 
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AppStateWidget(),
     );
@@ -19,7 +20,7 @@ class AppState extends StatelessWidget{
 }
 
 class AppStateWidget extends StatefulWidget{
-  const AppStateWidget({Key? key}): super(key: key);
+  const AppStateWidget({super.key});
 
   @override
   State<StatefulWidget> createState() => AppStateWidgetState();
@@ -31,10 +32,10 @@ class AppStateWidgetState extends State<AppStateWidget>{
   int _selectedIndex = 0;
 
   final List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    BoardPage(),
-    UnionPage(),
-    CalculatorPage(),
+    const HomePage(),
+    const BoardPage(),
+    const UnionPage(),
+    const CalculatorPage(),
   ];
   @override
   void dispose() {

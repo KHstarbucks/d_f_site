@@ -1,38 +1,18 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community/providers/youtube.dart';
 import 'package:http/http.dart' as http;
 import 'package:community/providers/palette.dart';
+import'package:community/providers/drawer.dart';
+import 'youtubeplayer_page.dart';
 
 
 
 class HomePage extends StatefulWidget{
-  const HomePage({Key? key}) : super(key:key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
-
-  //Future<List<Post>> getPopularPosts() async {
-  //QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-  //    .collection('posts')
-  //    .orderBy('views', descending: true) 
-  //    .limit(10)
-  //    .get();
-
-  //return querySnapshot.docs.map((doc) {
-  //  Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-  //  return Post(
-  //    title: data['title'],
-  //    content: data['content'],
-  //    author: data['author'],
-  //    createdAt: data['createdAt'].toDate(),
-  //    views: data['views'],
-  //    likes: data['likes'],
-  //  );
-  //}).toList();
- // }
-
 }
 
 class _HomePageState extends State<HomePage> {
@@ -69,6 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
         title: const Text('메이플모아',
           style: TextStyle(
@@ -85,12 +66,12 @@ class _HomePageState extends State<HomePage> {
           const Padding(
             padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
             child: Text(
-            'recommended videos',
-            style: TextStyle(
-              fontSize:18,
-              color: Palette.cursorColor,
+              '추천 유튜브 영상',
+              style: TextStyle(
+                fontSize:18,
+                color: Palette.cursorColor,
+              ),
             ),
-          ),
           ),
           FutureBuilder(
             future: youtubeVideos,
@@ -105,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                 return const Center(child: Text('No videos found.'));
               }
               else{
-                return Container(
+                return SizedBox(
                   height: 250,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -113,53 +94,61 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context,index){
                       Item item = snapshot.data.items[index];
                       Snippet snippet = item.snippet;
-                      return Container(
-                        width: 324,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Palette.borderColor,
-                            width: 2,
+                      Id id = item.id;
+                      return GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => YoutubePlayerPage(snippet: snippet, id:id))
+                          );
+                        },
+                        child: Container(
+                          width: 324,
+                          height: 180,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Palette.borderColor,
+                              width: 2,
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.all(8),
-                          child:Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width:288,
-                                height:162,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: Palette.cursorColor,
-                                    width: 2,
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.all(8),
+                            child:Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width:288,
+                                  height:162,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: Palette.cursorColor,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child:Image.network(
+                                    snippet.thumbnails.medium,
+                                    width: double.infinity,
+                                    height:double.infinity,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                child:Image.network(
-                                  snippet.thumbnails.medium,
-                                  width: double.infinity,
-                                  height:double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(8, 12, 8, 12),
-                                child: Text(
-                                  snippet.channelTitle,
-                                  style: const TextStyle(
-                                    color: Palette.cursorColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:16,
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(8, 12, 8, 12),
+                                  child: Text(
+                                    snippet.channelTitle,
+                                    style: const TextStyle(
+                                      color: Palette.cursorColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:16,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                        )
                       );
                     },
                   ),
@@ -167,7 +156,20 @@ class _HomePageState extends State<HomePage> {
               }
             }
           ),
+          const Divider(
+            color: Palette.borderColor,
+            thickness: 2,
+          ),
+          const Text(
+            '메이플 공지사항',
+            style: TextStyle(
+                fontSize:18,
+                color: Palette.cursorColor,
+            ),
+          ),
+          //크롤링 결과물
         ],
+        
       ),  
     );
   }

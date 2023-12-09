@@ -3,9 +3,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:community/providers/palette.dart';
+import'package:community/providers/drawer.dart';
 
 class UnionPage extends StatefulWidget{
-  const UnionPage({Key ? key}) : super(key:key);
+  const UnionPage({super.key});
+  
   @override
   State<UnionPage> createState() => _UnionPageState();
 }
@@ -69,6 +71,7 @@ class _UnionPageState extends State<UnionPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
         title: const Text('유니온 배치',
           style: TextStyle(

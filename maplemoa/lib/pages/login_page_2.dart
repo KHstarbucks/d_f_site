@@ -10,7 +10,7 @@ import 'signup_page.dart';
 
 
 class LoginPage extends StatefulWidget{
-  const LoginPage({Key?key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -31,9 +31,9 @@ class _LoginPageState extends State<LoginPage>{
 
   Future<UserCredential?> _signInWithEmailAndPw(BuildContext context) async {
     try{
-      final FirebaseAuth _auth = FirebaseAuth.instance;
+      final FirebaseAuth auth = FirebaseAuth.instance;
 
-      final UserCredential authResult = await _auth.signInWithEmailAndPassword(
+      final UserCredential authResult = await auth.signInWithEmailAndPassword(
         email: _UidController.text,
         password: _UpwController.text,
       );
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage>{
       Future.delayed(Duration.zero, (){
         Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AppState()),
+        MaterialPageRoute(builder: (context) => const AppState()),
         );
       });
 
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage>{
       Future.delayed(Duration.zero, (){
         Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AppState()),
+        MaterialPageRoute(builder: (context) => const AppState()),
         );
       });
       
@@ -98,9 +98,10 @@ class _LoginPageState extends State<LoginPage>{
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Palette.mainColor,
-      body: SafeArea(
-        top: true,
-        child: Padding(
+      body: SingleChildScrollView(
+        child:SafeArea(
+          top: true,
+          child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
           child: Container(
             width: double.infinity,
@@ -109,7 +110,7 @@ class _LoginPageState extends State<LoginPage>{
             ),
             decoration: BoxDecoration(
               color: Colors.white,
-              boxShadow:[
+              boxShadow:const [
                 BoxShadow(
                   blurRadius: 4,
                   color: Palette.shadowColor,
@@ -153,7 +154,7 @@ class _LoginPageState extends State<LoginPage>{
                           child: TextFormField(
                             controller: _UidController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.email],
+                            autofillHints: const [AutofillHints.email],
                             obscureText: false,
                             cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
@@ -201,7 +202,7 @@ class _LoginPageState extends State<LoginPage>{
                           child: TextFormField(
                             controller: _UpwController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.password],
+                            autofillHints: const [AutofillHints.password],
                             obscureText: true,
                             cursorColor: const Color(0xf8606163),
                             decoration: InputDecoration(
@@ -247,7 +248,7 @@ class _LoginPageState extends State<LoginPage>{
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Palette.mainColor,
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                             minimumSize: const Size.fromHeight(44),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -294,7 +295,7 @@ class _LoginPageState extends State<LoginPage>{
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
                         child: RichText(
                           textScaleFactor: MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
@@ -336,7 +337,8 @@ class _LoginPageState extends State<LoginPage>{
               )
             ),
           ),
-        );
+      ),
+    );
 
   }
 }

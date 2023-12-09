@@ -7,18 +7,20 @@ import 'package:logger/logger.dart';
 import 'login_page_2.dart';
 
 class SignupPage extends StatelessWidget{
-  final TextEditingController _NameController = TextEditingController();
-  final TextEditingController _UidController = TextEditingController();
-  final TextEditingController _UpwController = TextEditingController();
-  final TextEditingController _UpwcheckController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _uidController = TextEditingController();
+  final TextEditingController _upwController = TextEditingController();
+  final TextEditingController _upwcheckController = TextEditingController();
   
   final Logger _logger = Logger();
 
+  SignupPage({super.key});
+
   void _singUp() async {
-    String uname = _NameController.text;
-    String id = _UidController.text;
-    String pw = _UpwController.text;
-    String pwcheck = _UpwController.text;
+    String uname = _nameController.text;
+    String id = _uidController.text;
+    String pw = _upwController.text;
+    String pwcheck = _upwController.text;
 
     if(pw == pwcheck){
       try{
@@ -27,6 +29,7 @@ class SignupPage extends StatelessWidget{
           email: id,
           password: pw
           );
+          FirebaseAuth.instance.currentUser?.updateDisplayName(uname);
           String uid = userCredential.user!.uid;
           //firestore에 닉네임 저장
           await FirebaseFirestore.instance.collection('users').doc(uid).set({
@@ -48,10 +51,10 @@ class SignupPage extends StatelessWidget{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: const Color(0XFFEE8B60),
+        backgroundColor: Palette.mainColor,
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
             child: Container(
               width: double.infinity,
               constraints: const BoxConstraints(
@@ -59,19 +62,19 @@ class SignupPage extends StatelessWidget{
               ),
               decoration: BoxDecoration(
                 color: Colors.white,
-                boxShadow:[
+                boxShadow:const [
                   BoxShadow(
                     blurRadius: 4,
-                    color: Color(0X33000000),
+                    color: Palette.shadowColor,
                     offset: Offset(0,2),
                   ),
                 ],
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Align(
-                alignment: AlignmentDirectional(0,0),
+                alignment: const AlignmentDirectional(0,0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(32, 32, 32, 32),
+                  padding: const EdgeInsetsDirectional.fromSTEB(32, 32, 32, 32),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,25 +102,25 @@ class SignupPage extends StatelessWidget{
                         child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            controller: _NameController,
+                            controller: _nameController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.name],
+                            autofillHints: const [AutofillHints.name],
                             obscureText: false,
-                            cursorColor: const Color(0xf8606163),
+                            cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
                               labelText: 'Nickname',
-                              labelStyle: const TextStyle(color: Color(0xf8606163)),
+                              labelStyle: const TextStyle(color: Palette.cursorColor),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -134,7 +137,7 @@ class SignupPage extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             keyboardType: TextInputType.name,
                           ),
@@ -145,25 +148,25 @@ class SignupPage extends StatelessWidget{
                         child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            controller: _UidController,
+                            controller: _uidController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.email],
+                            autofillHints: const [AutofillHints.email],
                             obscureText: false,
-                            cursorColor: const Color(0xf8606163),
+                            cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: const TextStyle(color: Color(0xf8606163)),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -180,7 +183,7 @@ class SignupPage extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             keyboardType: TextInputType.emailAddress,
                           ),
@@ -191,25 +194,25 @@ class SignupPage extends StatelessWidget{
                         child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            controller: _UpwController,
+                            controller: _upwController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.password],
+                            autofillHints: const [AutofillHints.password],
                             obscureText: true,
-                            cursorColor: const Color(0xf8606163),
+                            cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: const TextStyle(color: Color(0xf8606163)),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -226,7 +229,7 @@ class SignupPage extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             keyboardType: TextInputType.text,
                           ),
@@ -237,25 +240,25 @@ class SignupPage extends StatelessWidget{
                         child: SizedBox(
                           width: double.infinity,
                           child: TextFormField(
-                            controller: _UpwcheckController,
+                            controller: _upwcheckController,
                             autofocus: true,
-                            autofillHints: [AutofillHints.password],
+                            autofillHints: const [AutofillHints.password],
                             obscureText: true,
-                            cursorColor: const Color(0xf8606163),
+                            cursorColor: Palette.cursorColor,
                             decoration: InputDecoration(
                               labelText: 'Password check',
                               labelStyle: const TextStyle(color: Color(0xf8606163)),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width: 2,
-                                  color: Color(0xfff1f2f8),
+                                  color: Palette.borderColor,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -272,7 +275,7 @@ class SignupPage extends StatelessWidget{
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xfff1f2f8),
+                              fillColor: Palette.borderColor,
                             ),
                             keyboardType: TextInputType.text,
                           ),
@@ -314,7 +317,7 @@ class SignupPage extends StatelessWidget{
                                 text: '  Login',
                                 style: const TextStyle(
                                   fontFamily: 'Readex Pro',
-                                  color: Color(0xffee8b60),
+                                  color: Palette.mainColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
@@ -323,7 +326,7 @@ class SignupPage extends StatelessWidget{
                                   _logger.i('going to loginpage button clicked');
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => LoginPage()),
+                                    MaterialPageRoute(builder: (context) => const LoginPage()),
                                   );
                                 },
                               ),

@@ -5,7 +5,7 @@ class MyNavigationBar extends StatelessWidget{
   final int currentIndex;
   final Function(int) onItemTapped;
   
-  MyNavigationBar({ required this.currentIndex, required this.onItemTapped});
+  const MyNavigationBar({super.key,  required this.currentIndex, required this.onItemTapped});
 
   @override
   Widget build(BuildContext context){

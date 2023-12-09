@@ -8,7 +8,7 @@
             "name": "maplemoa",
             "request": "launch",
             "type": "dart",
-            "args": ["-d","chrome","--web-port","8000"]
+            "args":  ["-d", "emulator-5554"]
         },
         {
             "name": "maplemoa_web",
@@ -27,6 +27,6 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        }
+        },
     ]
 }
