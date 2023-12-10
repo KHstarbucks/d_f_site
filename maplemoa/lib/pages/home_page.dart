@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:community/providers/youtube.dart';
 import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' as html;
+import 'package:html/dom.dart' as dom;
 import 'package:community/providers/palette.dart';
 import'package:community/providers/drawer.dart';
 import 'youtubeplayer_page.dart';
@@ -19,12 +21,14 @@ class _HomePageState extends State<HomePage> {
   
   late Future<VideosList> youtubeVideos;
   VideosList? youtube;
+  List<Notice> notices = [];
 
 
   @override
   void initState(){
     super.initState();
     youtubeVideos = fetchYoutubeVideos();
+    getNotice();
   }
   Future<VideosList> fetchYoutubeVideos() async{
     var part = 'snippet';
@@ -46,6 +50,24 @@ class _HomePageState extends State<HomePage> {
       throw Exception('Failed to load Youtube videos');
     }
   }
+
+  Future<void> getNotice() async {
+    final url = Uri.parse('https://maplestory.nexon.com/News/Notice');
+    final response = await http.get(url);
+    dom.Document html = dom.Document.html(response.body);
+
+    final titles = html.
+    querySelectorAll('p > a > span').
+    map((element) => element.innerHtml.trim()).take(10).toList();
+
+    setState((){
+      notices = List.generate(titles.length, (index) => Notice(
+        title: titles[index]
+      ));
+    });
+  }//#container > div > div.contents_wrap > div.qs_text > div > div
+
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -168,9 +190,33 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           //크롤링 결과물
+          Container(
+            child: Expanded(
+              child:ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount : notices.length,
+                itemBuilder: (context, index){
+                  final  notice = notices[index];
+                  return InkWell(
+                    onTap: (){
+                    },
+                    child: Container(
+                      child: Text(notice.title,
+                        style: TextStyle(fontSize:16))
+                    ),
+                  );
+                }
+              ),
+            ),
+          ),
         ],
         
       ),  
     );
   }
+}
+
+class Notice{
+  final String title;
+  Notice({required this.title});
 }
