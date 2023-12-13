@@ -139,6 +139,7 @@ class _WritingPageState extends State<WritingPage> {
               onPressed: () {
                 // 글 저장 로직
                 _addItem();
+                Navigator.pop(context);
               },
               style:ButtonStyle(
                 backgroundColor:MaterialStateProperty.all(Palette.mainColor),

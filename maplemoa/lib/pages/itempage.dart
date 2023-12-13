@@ -1,3 +1,4 @@
+import 'package:community/pages/itemdetail_page.dart';
 import 'package:community/providers/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,6 +46,10 @@ class _ItemPageState extends State<ItemPage>{
             itemCount: itemPosts.length,
             itemBuilder: (context, index){
               var itemData = itemPosts[index].data() as Map<String, dynamic>;
+              var time = itemData['createdAt'] as Timestamp;
+              var date = time.toDate();
+              String createdAt = "${date.year}.${date.month}.${date.day} ${date.hour}:${date.minute}";
+              
               return ListTile(
                 contentPadding: const EdgeInsetsDirectional.all(8),
                 leading: (itemData['itemPicture'] != null)
@@ -54,13 +59,18 @@ class _ItemPageState extends State<ItemPage>{
                   fit: BoxFit.cover
                   ):const Text(''),
                 title: Text(itemData['title']),
-                subtitle: Column(
+                subtitle: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('${itemData['author']}'),
-                    Text('${itemData['createdAt']}'),
+                    const SizedBox(width: 24),
+                    Text(createdAt),
                   ],
-                  ),
+                ),
+                onTap:() {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ItemDetailPage(item: itemData)));
+                },
               );
             }
             

@@ -103,7 +103,11 @@ class _HomePageState extends State<HomePage> {
             future: youtubeVideos,
             builder: (BuildContext context,AsyncSnapshot snapshot){
               if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Palette.mainColor),
+                  )
+                  );
               }
               else if(snapshot.hasError){
                 return Center(child: Text('Error: ${snapshot.error}'));

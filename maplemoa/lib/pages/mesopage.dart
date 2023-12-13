@@ -74,7 +74,10 @@ class _MesoPageState extends State<MesoPage>{
                     var mesoData = mesos[index].data() as Map<String, dynamic>;
                     var comment = mesoData['comment'];
                     var author = mesoData['author'];
-                    var createdAt = (mesoData['createdAt'] as Timestamp).toDate();
+                    var time = mesoData['createdAt'] as Timestamp;
+                    var date = time.toDate();
+                    String createdAt = "${date.year}.${date.month}.${date.day} ${date.hour}:${date.minute}";
+              
                     return Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                       child: Container(

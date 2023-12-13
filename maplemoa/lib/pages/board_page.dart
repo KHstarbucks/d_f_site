@@ -126,8 +126,10 @@ class _BoardPageState extends State<BoardPage>{
                 var postData = searchedPosts[index];
                 var title = postData['title'];
                 var author = postData['author'];
-                var createdAt = (postData['createdAt'] as Timestamp).toDate();
+                var date = (postData['createdAt'] as Timestamp).toDate();
                 var view = postData['views'];
+                String createdAt = "${date.year}.${date.month}.${date.day} ${date.hour}:${date.minute}";
+
                 return Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
                   child: GestureDetector(
@@ -193,7 +195,7 @@ class _BoardPageState extends State<BoardPage>{
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
                                     child: Text(
-                                      '$createdAt',
+                                      createdAt,
                                       textAlign: TextAlign.end,
                                     ),
                                   ),
@@ -228,8 +230,9 @@ class _BoardPageState extends State<BoardPage>{
                     var postData = posts[index].data() as Map<String, dynamic>;
                     var title = postData['title'];
                     var author = postData['author'];
-                    var createdAt = (postData['createdAt'] as Timestamp).toDate();
+                    var date = (postData['createdAt'] as Timestamp).toDate();
                     var view = postData['views'];
+                    String createdAt = "${date.year}.${date.month}.${date.day} ${date.hour}:${date.minute}";
 
                     return Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
@@ -297,7 +300,7 @@ class _BoardPageState extends State<BoardPage>{
                                 Padding(
                                   padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
                                   child: Text(
-                                    '$createdAt',
+                                    createdAt,
                                     textAlign: TextAlign.end,
                                   ),
                                 ),
