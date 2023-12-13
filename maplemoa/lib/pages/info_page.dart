@@ -91,7 +91,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       drawer: MyDrawer(),
       appBar: AppBar(
         title: const Text(
@@ -133,7 +133,7 @@ class _InfoPageState extends State<InfoPage> {
                           child: TextFormField(
                             controller: _charnameController,
                             decoration: const InputDecoration(
-                              labelText: '영어는 대소문자 구분',
+                              labelText: '캐릭터 이름',
                               labelStyle: TextStyle(
                                 color: Palette.cursorColor,
                               ),
@@ -180,7 +180,7 @@ class _InfoPageState extends State<InfoPage> {
                           height: 180,
                           fit: BoxFit.cover,
                         )
-                      ): const Center(child: Text('No signal'))
+                      ): const Center(child: Text('영어는 대소문자 구분'))
                     )
                   ),
                   //서버, 닉네임, 레벨
