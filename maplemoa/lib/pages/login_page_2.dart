@@ -52,6 +52,21 @@ class _LoginPageState extends State<LoginPage>{
       return authResult;
     }catch(e){
       print('Login failed. $e');
+      showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: const Text('Login failed'),
+            content: const Text('로그인에 실패하셨습니다.'),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: const Text('Ok'))
+            ],
+          );
+        }
+      );
+
       return null;
     }
   }
