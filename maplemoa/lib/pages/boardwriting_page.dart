@@ -81,9 +81,11 @@ class _WritingPageState extends State<WritingPage>{
                     controller: _titleController,
                     cursorColor: Palette.cursorColor,
                     decoration: const InputDecoration(
-                      labelText: 'content',
+                      labelText: 'title',
                       labelStyle: TextStyle(color: Palette.cursorColor),
                       focusColor: Palette.cursorColor,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           width:2,
@@ -106,6 +108,8 @@ class _WritingPageState extends State<WritingPage>{
                       labelText: 'content',
                       labelStyle: TextStyle(color: Palette.cursorColor),
                       focusColor: Palette.cursorColor,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           width:2,
@@ -125,6 +129,7 @@ class _WritingPageState extends State<WritingPage>{
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addPost();
+          Navigator.pop(context);
         },
         backgroundColor: Palette.mainColor,
         shape: RoundedRectangleBorder(
