@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage>{
                             cursorColor: const Color(0xf8606163),
                             decoration: InputDecoration(
                               labelText: 'Password',
-                              labelStyle: const TextStyle(color: Color(0xf8606163)),
+                              labelStyle: const TextStyle(color: Palette.cursorColor),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                   width:2,

@@ -3,14 +3,14 @@ import 'package:community/providers/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:community/pages/login_page_2.dart';
-
-
+import 'package:community/pages/union_page.dart';
+import 'package:community/pages/mesopage.dart';
+import 'package:community/pages/itempage.dart';
 
 
 class MyDrawer extends StatelessWidget{
   final FirebaseAuth user_ = FirebaseAuth.instance;
   final Logger _logger = Logger();
-
 
 
   Future<void> logOut(BuildContext context) async {
@@ -31,7 +31,7 @@ class MyDrawer extends StatelessWidget{
           width: 300,
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 blurRadius: 4,
                 color: Palette.shadowColor,
@@ -49,14 +49,14 @@ class MyDrawer extends StatelessWidget{
                 Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    color: Palette.borderColor,
+                    color: Colors.white,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
+                  child:  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Padding(
+                        const Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
                           child: Icon(Icons.account_circle_outlined,
                           color: Palette.iconColor,
@@ -65,10 +65,10 @@ class MyDrawer extends StatelessWidget{
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                             child: Text(
-                              '용사 ',
-                              style: TextStyle(
+                              user_.currentUser?.displayName ?? '용사',
+                              style: const TextStyle(
                                 color: Palette.iconColor,
                                 fontSize: 14,
                                 fontWeight:  FontWeight.w500,
@@ -81,7 +81,7 @@ class MyDrawer extends StatelessWidget{
                   ),
                 ),
                 const Divider(
-                  thickness: 1,
+                  thickness: 2,
                   color: Palette.deviderColor,
                 ),
                 const Padding(
@@ -96,63 +96,70 @@ class MyDrawer extends StatelessWidget{
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: Icon(
-                          Icons.money,
-                          color: Palette.iconColor,
-                          size:20,
-                        ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.money,
+                    color: Palette.iconColor,
+                    size:20,
+                  ),
+                  title: const Text(
+                    '메소 거래',
+                    style: TextStyle(
+                      color: Palette.iconColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MesoPage())
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.star_border_outlined,
+                    color: Palette.iconColor,
+                    size:20,
+                  ),
+                  title: const Text(
+                    '아이템 거래',
+                    style: TextStyle(
+                      color: Palette.iconColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Text(
-                            '메소 거래',
-                            style: TextStyle(
-                              color: Palette.iconColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                    ),
+                  onTap: () {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ItemPage())
+                    );
+                  },
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: Palette.deviderColor,
                 ),
                 const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: Icon(
-                          Icons.star_border_outlined,
-                          color: Palette.iconColor,
-                          size:20,
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                          child: Text(
-                            '아이템 거래',
-                            style: TextStyle(
-                              color: Palette.iconColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                  padding: EdgeInsetsDirectional.fromSTEB(12, 4, 0, 8),
+                  child: Text(
+                    'mobile app only',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: Palette.iconColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.border_all),
+                  title: const Text('유니온 배치'),
+                  onTap: () {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const UnionPage())
+                    );
+                  },
                 ),
                 const Divider(
                   thickness: 2,

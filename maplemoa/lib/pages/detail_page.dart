@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community/providers/palette.dart';
@@ -90,7 +89,7 @@ class _DetailPageState extends State<DetailPage>{
               ),
               Text(
                 widget.postData['content'],
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 16),
               Row(

@@ -16,13 +16,14 @@ class SignupPage extends StatelessWidget{
 
   SignupPage({super.key});
 
-  void _singUp() async {
+  void _singUp(BuildContext context) async {
     String uname = _nameController.text;
     String id = _uidController.text;
     String pw = _upwController.text;
     String pwcheck = _upwController.text;
 
-    if(pw == pwcheck){
+
+    if(pw == pwcheck && uname.isNotEmpty && id.isNotEmpty && pw.isNotEmpty){
       try{
         //firebaseauth에 id,pw저장
         UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -31,18 +32,55 @@ class SignupPage extends StatelessWidget{
           );
           FirebaseAuth.instance.currentUser?.updateDisplayName(uname);
           String uid = userCredential.user!.uid;
+          
+          showDialog(
+            context: context,
+           builder: (context) {
+            return AlertDialog(
+              title: const Text('Sign up success!'),
+              content: const Text('회원가입 완료'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                  Navigator.pop(context);
+                },
+                child:const Text('Ok'),
+                ),
+              ],
+            );
+           }
+          );
+          
           //firestore에 닉네임 저장
           await FirebaseFirestore.instance.collection('users').doc(uid).set({
             'id' : id,
             'name': uname,
           });
-
           _logger.i('sign up $uid');
+          
       }on FirebaseAuthException catch(e){
         _logger.e('Sign up failed. $e');
       }
     }
-    else {return;}
+    else {
+      showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Password error'),
+          content: const Text('비밀번호가 일치하지 않습니다.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child:const Text('Ok'),
+            ),
+          ],
+        );
+      }
+    );
+    }
   }
   
 
@@ -294,7 +332,7 @@ class SignupPage extends StatelessWidget{
                           ),
                           child: const Text('Sign Up'),
                           onPressed: () async {
-                            _singUp();
+                            _singUp(context);
                           },
                         ),
                       ),

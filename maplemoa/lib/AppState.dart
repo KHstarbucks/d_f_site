@@ -1,10 +1,10 @@
+import 'package:community/pages/info_page.dart';
 import 'package:community/providers/navigationbar.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/board_page.dart';
 import 'pages/calculator_page.dart';
 import 'pages/home_page.dart';
-import 'pages/union_page.dart';
 
 class AppState extends StatelessWidget{
   const AppState({super.key});
@@ -34,7 +34,7 @@ class AppStateWidgetState extends State<AppStateWidget>{
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
     const BoardPage(),
-    const UnionPage(),
+    const InfoPage(),
     const CalculatorPage(),
   ];
   @override

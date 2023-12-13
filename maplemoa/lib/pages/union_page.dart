@@ -3,7 +3,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:community/providers/palette.dart';
-import'package:community/providers/drawer.dart';
 
 class UnionPage extends StatefulWidget{
   const UnionPage({super.key});
@@ -71,7 +70,6 @@ class _UnionPageState extends State<UnionPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      drawer: MyDrawer(),
       appBar: AppBar(
         title: const Text('유니온 배치',
           style: TextStyle(
@@ -79,6 +77,12 @@ class _UnionPageState extends State<UnionPage>{
           )
         ),
         backgroundColor:Palette.mainColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SafeArea(
         bottom: false,

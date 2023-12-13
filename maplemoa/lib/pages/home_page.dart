@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:community/providers/youtube.dart';
 import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as html;
 import 'package:html/dom.dart' as dom;
 import 'package:community/providers/palette.dart';
 import'package:community/providers/drawer.dart';
 import 'youtubeplayer_page.dart';
-
+import 'package:community/providers/notice.dart';
+import 'notice_page.dart';
 
 
 class HomePage extends StatefulWidget{
@@ -55,18 +55,22 @@ class _HomePageState extends State<HomePage> {
     final url = Uri.parse('https://maplestory.nexon.com/News/Notice');
     final response = await http.get(url);
     dom.Document html = dom.Document.html(response.body);
-
     final titles = html.
     querySelectorAll('p > a > span').
     map((element) => element.innerHtml.trim()).take(10).toList();
 
+    final urls = html.querySelectorAll('p > a').
+    map((element) => 'https://maplestory.nexon.com${element.attributes['href']}').take(10).toList();
+
     setState((){
       notices = List.generate(titles.length, (index) => Notice(
-        title: titles[index]
+        title: titles[index],
+        url: urls[index],
       ));
     });
   }//#container > div > div.contents_wrap > div.qs_text > div > div
-
+  
+  
 
   @override
   Widget build(BuildContext context){
@@ -182,41 +186,46 @@ class _HomePageState extends State<HomePage> {
             color: Palette.borderColor,
             thickness: 2,
           ),
-          const Text(
-            '메이플 공지사항',
-            style: TextStyle(
+          const Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+            child: Text(
+              '메이플 공지사항',
+              style: TextStyle(
                 fontSize:18,
                 color: Palette.cursorColor,
-            ),
-          ),
-          //크롤링 결과물
-          Container(
-            child: Expanded(
-              child:ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount : notices.length,
-                itemBuilder: (context, index){
-                  final  notice = notices[index];
-                  return InkWell(
-                    onTap: (){
-                    },
-                    child: Container(
-                      child: Text(notice.title,
-                        style: TextStyle(fontSize:16))
-                    ),
-                  );
-                }
               ),
             ),
           ),
+          //크롤링 결과물
+          Expanded(
+            child:ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount : notices.length,
+              itemBuilder: (context, index){
+                final  notice = notices[index];
+                return InkWell(
+                  onTap: () async {
+                    print(notice.url);
+                    logger.d(notice.url);
+                    try {
+                      // NoticePage로 이동
+                      print(notices[index]);
+                      Navigator.push(context, MaterialPageRoute(builder: ((context) => NoticePage(notice: notice))));
+                    } catch (error) {
+                      print('Error fetching clicked item HTML: $error');
+                    }
+                  },
+                  child: Text(
+                    notice.title,
+                    style: const TextStyle(fontSize:16)
+                  ),
+                );
+              }
+            ),
+          ),
         ],
-        
       ),  
     );
   }
 }
 
-class Notice{
-  final String title;
-  Notice({required this.title});
-}

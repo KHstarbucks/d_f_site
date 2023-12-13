@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:community/providers/palette.dart';
 import'package:community/providers/drawer.dart';
 import 'detail_page.dart';
+import 'boardwriting_page.dart';
 
 
 class BoardPage extends StatefulWidget{
@@ -16,48 +17,25 @@ class BoardPage extends StatefulWidget{
 
 class _BoardPageState extends State<BoardPage>{
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
-
-  bool isWriting = false;
   User? currentUser = FirebaseAuth.instance.currentUser;
   late List<Map<String, dynamic>> searchedPosts;
   
-  //add new post
-  void _addPost() async {
-    String title = _titleController.text.trim();
-    String content = _contentController.text.trim();
-    String author = currentUser?.displayName ?? 'Anonymous';
+  Future<void> _searchPost(String keyword) async{
+    var query = keyword.toLowerCase();
+    var querySnapshot = await FirebaseFirestore.instance.collection('posts').
+      where('title', isGreaterThanOrEqualTo: query).
+      where('title', isLessThan: query + 'z').get();
 
-    if(title.isNotEmpty && content.isNotEmpty){
-      await FirebaseFirestore.instance.collection('posts').add({
-        'title' : title,
-        'content' : content,
-        'author' : author,
-        'views' : 0,
-        'likes' : 0,
-        'dislikes' : 0,
-        'createdAt' : FieldValue.serverTimestamp(),
-      });
-
-      _titleController.clear();
-      _contentController.clear();
-
-      setState(() {
-        isWriting = false;
-      });
-    }
+    setState(() {
+      searchedPosts = querySnapshot.docs.map((doc) => doc.data()).toList();
+    });
   }
+
   void _updateViews(DocumentReference postRef, int currentViews){
     postRef.update({'views': currentViews +1});
   }
-  void _updateLikes(DocumentReference postRef, int currentLikes){
-    postRef.update({'likes': currentLikes +1});
-  }
-  void _updateDislikes(DocumentReference postRef, int currentDislikes){
-    postRef.update({'dislikes': currentDislikes +1});
-  }
+  
   @override
   void initState(){
     super.initState();
@@ -129,7 +107,8 @@ class _BoardPageState extends State<BoardPage>{
                     ),
                     IconButton(
                       onPressed: (){
-                        print(" s");
+                        //검색
+                        _searchPost(_searchController.text);
                       },
                       icon: const Icon(Icons.search),
                     ),
@@ -138,14 +117,107 @@ class _BoardPageState extends State<BoardPage>{
               ),
             ),
           ),
-          //board list
-          Expanded(
+          //검색결과
+          searchedPosts.
+          isNotEmpty?Expanded(
+            child: ListView.builder(
+              itemCount: searchedPosts.length,
+              itemBuilder: (context, index) {
+                var postData = searchedPosts[index];
+                var title = postData['title'];
+                var author = postData['author'];
+                var createdAt = (postData['createdAt'] as Timestamp).toDate();
+                var view = postData['views'];
+                return Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+                  child: GestureDetector(
+                      onTap: () {
+                        DocumentReference postRef = FirebaseFirestore.instance.collection('posts').doc();
+                          _updateViews(postRef, view);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DetailPage(postData: postData, postRef: postRef)),
+                          );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xfff7f7f7),
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 3,
+                              color: Color(0x411d2429),
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 4, 0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('$title'),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 8, 0),
+                                        child: AutoSizeText(
+                                          '$author',
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                                    child: Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xff57636c),
+                                      size: 24,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 4, 8),
+                                    child: Text(
+                                      '$createdAt',
+                                      textAlign: TextAlign.end,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+            //게시판
+          :Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+              stream: FirebaseFirestore.instance.collection('posts').orderBy('createdAt',descending: true).snapshots(),
               builder: (context, snapshot){
                 if(!snapshot.hasData){
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Palette.mainColor),
+                    ),
                   );
                 }
                 var posts = snapshot.data!.docs;
@@ -242,50 +314,12 @@ class _BoardPageState extends State<BoardPage>{
           },
           )
         ),//글 작성을 위한 버튼을 누른 경우
-        isWriting 
-        ? Container(
-            height: 400,
-            color: Colors.white,
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    hintText: 'title',
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _contentController,
-                  maxLines: 10,
-                  decoration: const InputDecoration(
-                    hintText: 'content',
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: _addPost,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xffee8b60),
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                    minimumSize: const Size.fromHeight(8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ), 
-                  child: const Text('Post'),
-                ),
-              ],
-            ),
-          ): Container(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            isWriting = true;
-          });
+          Navigator.push(context,
+          MaterialPageRoute(builder: (context) => WritingPage()));
         },
         tooltip: 'Add Post',
         backgroundColor: Palette.mainColor,
