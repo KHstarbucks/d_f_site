@@ -13,6 +13,7 @@ class ItemPage extends StatefulWidget{
 
 class _ItemPageState extends State<ItemPage>{
 
+  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +82,7 @@ class _ItemPageState extends State<ItemPage>{
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => WritingPage()),
+            MaterialPageRoute(builder: (context) => const WritingPage()),
           );
         },
         tooltip: 'Add Post',

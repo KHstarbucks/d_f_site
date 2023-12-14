@@ -209,14 +209,13 @@ class _HomePageState extends State<HomePage> {
                 final  notice = notices[index];
                 return InkWell(
                   onTap: () async {
-                    print(notice.url);
                     logger.d(notice.url);
                     try {
                       // NoticePage로 이동
-                      print(notices[index]);
+                      logger.d(notices[index]);
                       Navigator.push(context, MaterialPageRoute(builder: ((context) => NoticePage(notice: notice))));
                     } catch (error) {
-                      print('Error fetching clicked item HTML: $error');
+                      logger.d('Error fetching clicked item HTML: $error');
                     }
                   },
                   child: Text(
