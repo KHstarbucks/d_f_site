@@ -177,6 +177,7 @@ class MyDrawer extends StatelessWidget{
                       )
                     ),
                     onPressed: (){
+                      logOut(context);
                       Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
                       );
