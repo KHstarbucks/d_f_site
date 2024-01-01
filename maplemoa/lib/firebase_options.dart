@@ -44,42 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCcSx6qLCPGxWldh7ZomPqSZ-Vy8dUvet8',
-    appId: '1:925684634960:web:13d48e31c3d7949f984855',
-    messagingSenderId: '925684634960',
-    projectId: 'dtproject-3930e',
-    authDomain: 'dtproject-3930e.firebaseapp.com',
-    databaseURL: 'https://dtproject-3930e-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'dtproject-3930e.appspot.com',
-    measurementId: 'G-7LEWN1QDPN',
+    apiKey: ,//
+    appId: ,//
+    messagingSenderId: ,//
+    projectId: //,
+    authDomain: //,
+    databaseURL: //,
+    storageBucket: //,
+    measurementId: //,
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBMkz4evTy9or1ajGUqWMnL36nJcB3huIo',
-    appId: '1:925684634960:android:f8d82ac1dd236850984855',
-    messagingSenderId: '925684634960',
-    projectId: 'dtproject-3930e',
-    databaseURL: 'https://dtproject-3930e-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'dtproject-3930e.appspot.com',
+    apiKey: //,
+    appId: //,
+    messagingSenderId: //,
+    projectId: //,
+    databaseURL: //,
+    storageBucket: //,
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC1Of9R1NgGrixgCEA69kRaBF1rXL7ISAU',
-    appId: '1:925684634960:ios:7971d6474ed2c38c984855',
-    messagingSenderId: '925684634960',
-    projectId: 'dtproject-3930e',
-    databaseURL: 'https://dtproject-3930e-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'dtproject-3930e.appspot.com',
-    iosBundleId: 'com.example.maplemoa',
+    apiKey: //,
+    appId: //,
+    messagingSenderId: //,
+    projectId: //,
+    databaseURL: //
+    storageBucket: //,
+    iosBundleId: //,
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC1Of9R1NgGrixgCEA69kRaBF1rXL7ISAU',
-    appId: '1:925684634960:ios:baef2d99e2f10747984855',
-    messagingSenderId: '925684634960',
-    projectId: 'dtproject-3930e',
-    databaseURL: 'https://dtproject-3930e-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'dtproject-3930e.appspot.com',
-    iosBundleId: 'com.example.maplemoa.RunnerTests',
+    apiKey: //,
+    appId: //,
+    messagingSenderId: //,
+    projectId: //,
+    databaseURL: //,
+    storageBucket: //,
+    iosBundleId: //,
   );
 }
