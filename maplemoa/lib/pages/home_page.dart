@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     var part = 'snippet';
     var maxResults = 5;
     var q = '메이플';
-    var apiKey = 'AIzaSyCTfzDpAjO2Vs_vlRcvd_Wv3xvvvezcBdc';
+    //var apiKey = ;
 
     var url = 'https://www.googleapis.com/youtube/v3/search?'
     'part=$part&maxResults=$maxResults&q=$q&type=video&key=$apiKey';
